@@ -178,6 +178,8 @@
     userAction.addEditDeveloperNameChoice(actionChoices);
     userAction.addPathEditChoices(actionChoices);
     actionChoices.push("separator");
+    userAction.addChangePasswordAction(actionChoices);
+    actionChoices.push("separator");
     if (userConfigIsAcceptable()) {
       userAction.addSkipChoice(actionChoices);
     }
@@ -322,6 +324,20 @@
   };
 
   //region userConfigManipulations
+  userconfigmodule.changePasswordProcess = async function() {
+    var current, firstPassword, secondPassword;
+    log("userconfigmodule.changePasswordProcess");
+    current = cfg.userConfig.developerName;
+    firstPassword = (await user.inquirePassword("new password"));
+    secondPassword = (await user.inquirePassword("retype password"));
+    if (firstPassword === secondPassword) {
+      userPwd = firstPassword;
+      await fileWrite();
+    } else {
+      printError("Passwords did not match!");
+    }
+  };
+
   userconfigmodule.editDeveloperName = async function() {
     var current, post;
     log("userconfigmodule.editDeveloperName");
@@ -331,7 +347,7 @@
       return;
     }
     cfg.userConfig.developerName = post;
-    return (await fileWrite());
+    await fileWrite();
   };
 
   //region serviceManipulation

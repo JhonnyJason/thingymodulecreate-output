@@ -89,6 +89,13 @@
         return (await userConfig.editTemporaryFilesPath());
       }
     },
+    changePassword: {
+      userChoiceLabel: "change password",
+      execute: async function() {
+        log("execution of changePasswordAction");
+        return (await userConfig.changePasswordProcess());
+      }
+    },
     skip: {
       userChoiceLabel: "skip",
       execute: function() {
@@ -161,6 +168,12 @@
   };
 
   //region addChoices
+  useractionmodule.addChangePasswordAction = function(choices) {
+    log("useractionmodule.addChangePasswordAction");
+    choices.push(getActionChoice(allUserActions.changePassword));
+    return choices;
+  };
+
   useractionmodule.addEditDeveloperNameChoice = function(choices) {
     log("useractionmodule.addEditDeveloperNameChoice");
     choices.push(getActionChoice(allUserActions.editDeveloperName));
