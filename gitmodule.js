@@ -38,55 +38,6 @@
   //endregion
 
   //region exposedFunctions
-  gitmodule.stash = async function(base) {
-    var result;
-    log("gitmodule.stash");
-    result = (await git(base).stash());
-    return result;
-  };
-
-  gitmodule.stashPop = async function(base) {
-    var result;
-    log("gitmodule.stashPop");
-    result = (await git(base).stash(["pop"]));
-    return result;
-  };
-
-  gitmodule.deinitSubmodule = async function(base, modulePath) {
-    var result;
-    log("gitmodule.deinitSubmodule");
-    result = (await git(base).raw(['submodule', 'deinit', '-f', '--', modulePath]));
-    return result;
-  };
-
-  gitmodule.restoreStaged = async function(base, path) {
-    var result;
-    log("gitmodule.restoreStaged");
-    result = (await git(base).raw(['restore', '--staged', path]));
-    return result;
-  };
-
-  gitmodule.rmCached = async function(base, path) {
-    var result;
-    log("gitmodule.rmCached");
-    result = (await git(base).raw(['rm', '--cached', '-r', path]));
-    return result;
-  };
-
-  gitmodule.getGitRoot = async function(base) {
-    var result;
-    log("gitmodule.getGitRoot");
-    result = (await git(base).raw(['rev-parse', '--show-toplevel']));
-    return result;
-  };
-
-  gitmodule.getOriginURL = async function(base) {
-    var result;
-    log("gitmodule.getOriginURL");
-    result = (await git(base).raw(['config', '--get', 'remote.origin.url']));
-    return result;
-  };
-
   gitmodule.addSubmodule = async function(base, remote, label) {
     var url;
     log("gitmodule.addSubmodule");
@@ -95,6 +46,16 @@
       url = remote.getHTTPS();
     }
     await git(base).submoduleAdd(url, label);
+  };
+
+  gitmodule.push = async function(base) {
+    log("gitmodule.push");
+    await git(base).push("origin", "master");
+  };
+
+  gitmodule.addAll = async function(base) {
+    log("gitmodule.addAll");
+    await git(base).add(".");
   };
 
   gitmodule.add = async function(base, path) {
@@ -109,16 +70,6 @@
     log("gitmodule.commit");
     result = (await git(base).commit(message));
     return result;
-  };
-
-  gitmodule.push = async function(base) {
-    log("gitmodule.push");
-    await git(base).push("origin", "master");
-  };
-
-  gitmodule.addAll = async function(base) {
-    log("gitmodule.addAll");
-    await git(base).add(".");
   };
 
   gitmodule.init = async function(base, remote) {
@@ -153,6 +104,55 @@
       throw "No URL to clone available for RemoteObject!";
     }
     await git(base).clone(url);
+  };
+
+  gitmodule.stash = async function(base) {
+    var result;
+    log("gitmodule.stash");
+    result = (await git(base).stash());
+    return result;
+  };
+
+  gitmodule.stashPop = async function(base) {
+    var result;
+    log("gitmodule.stashPop");
+    result = (await git(base).stash(["pop"]));
+    return result;
+  };
+
+  gitmodule.restoreStaged = async function(base, path) {
+    var result;
+    log("gitmodule.restoreStaged");
+    result = (await git(base).raw(['restore', '--staged', path]));
+    return result;
+  };
+
+  gitmodule.deinitSubmodule = async function(base, modulePath) {
+    var result;
+    log("gitmodule.deinitSubmodule");
+    result = (await git(base).raw(['submodule', 'deinit', '-f', '--', modulePath]));
+    return result;
+  };
+
+  gitmodule.rmCached = async function(base, path) {
+    var result;
+    log("gitmodule.rmCached");
+    result = (await git(base).raw(['rm', '--cached', '-r', path]));
+    return result;
+  };
+
+  gitmodule.getGitRoot = async function(base) {
+    var result;
+    log("gitmodule.getGitRoot");
+    result = (await git(base).raw(['rev-parse', '--show-toplevel']));
+    return result;
+  };
+
+  gitmodule.getOriginURL = async function(base) {
+    var result;
+    log("gitmodule.getOriginURL");
+    result = (await git(base).raw(['config', '--get', 'remote.origin.url']));
+    return result;
   };
 
   //endregion
