@@ -28,17 +28,17 @@
   allCloudServiceTypes = {
     github: {
       defaultHost: "https://api.github.com",
-      module: require("./githubservice")
+      moduleName: "githubservicemodule"
     },
     gitlab: {
       defaultHost: "https://gitlab.com",
-      module: require("./gitlabservice")
+      moduleName: "gitlabservicemodule"
     }
   };
 
   // bitbucket:
   //     defaultHost: "https://api.bitbucket.org/2.0"
-  //     module: require "bitbucketservice"
+  //     moduleName: "bitbucketservicemodule"
   allServiceTypes = Object.keys(allCloudServiceTypes);
 
   //endregion
@@ -61,17 +61,12 @@
 
   //endregion
   //#############################################################################
-  cloudservicemodule.initialize = async function() {
-    var m, n;
+  cloudservicemodule.initialize = function() {
     log("cloudservicemodule.initialize");
     globalScope = allModules.globalscopemodule;
     userConfig = allModules.userconfigmodule;
     urlHandler = allModules.urlhandlermodule;
     user = allModules.userinquirermodule;
-    for (n in allCloudServiceTypes) {
-      m = allCloudServiceTypes[n];
-      await m.module.initialize();
-    }
   };
 
   //region internalFunctions
@@ -118,16 +113,16 @@
     var module, type;
     log("createRepository");
     type = service.type;
-    module = allCloudServiceTypes[type].module;
-    await module.createRepository(service, repoName, visible);
+    module = allCloudServiceTypes[type].moduleName;
+    await allModules[module].createRepository(service, repoName, visible);
   };
 
   deleteRepository = async function(service, repoName) {
     var module, type;
     log("deleteRepository");
     type = service.type;
-    module = allCloudServiceTypes[type].module;
-    await module.deleteRepository(service, repoName);
+    module = allCloudServiceTypes[type].moduleName;
+    await allModules[module].deleteRepository(service, repoName);
   };
 
   //region urlRelatedFunctions
@@ -150,8 +145,8 @@
     log("sshURLBaseForService");
     type = service.type;
     if (allCloudServiceTypes[type] != null) {
-      module = allCloudServiceTypes[type].module;
-      return module.getSSHURLBase(service);
+      module = allCloudServiceTypes[type].moduleName;
+      return allModules[module].getSSHURLBase(service);
     }
     return getSSHURLBaseForUnknownService(service);
   };
@@ -161,8 +156,8 @@
     log("httpsURLBaseForService");
     type = service.type;
     if (allCloudServiceTypes[type] != null) {
-      module = allCloudServiceTypes[type].module;
-      return module.getHTTPSURLBase(service);
+      module = allCloudServiceTypes[type].moduleName;
+      return allModules[module].getHTTPSURLBase(service);
     }
     return getHTTPSURLBaseForUnknownService(service);
   };
@@ -244,8 +239,8 @@
     var module, type;
     log("cloudservicemodule.checkService");
     type = service.type;
-    module = allCloudServiceTypes[type].module;
-    await module.check(service);
+    module = allCloudServiceTypes[type].moduleName;
+    await allModules[module].check(service);
   };
 
   //region interfaceForUserActions
