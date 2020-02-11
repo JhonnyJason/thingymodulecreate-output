@@ -6,8 +6,8 @@
     name: "globalscopemodule"
   };
 
+  //###########################################################
   //region logPrintFunctions
-  //#############################################################################
   log = function(arg) {
     if (allModules.debugmodule.modulesToDebug["globalscopemodule"] != null) {
       console.log("[globalscopemodule]: " + arg);
@@ -23,19 +23,18 @@
   };
 
   //endregion
+
+  //###########################################################
+  serviceScopePairs = [];
+
+  globalScope = {};
+
   //#############################################################################
   globalscopemodule.initialize = function() {
     log("globalscopemodule.initialize");
   };
 
-  //region internalProperties
-  serviceScopePairs = [];
-
-  globalScope = {};
-
-  //endregion
-
-  //region internalFunctions
+  //###########################################################
   updateGlobalScope = function() {
     var i, len, p;
     log("updateGlobalScope");
@@ -67,9 +66,9 @@
     return results;
   };
 
-  //endregion
-
+  //###########################################################
   //region exposedFunctions
+  //###########################################################
   globalscopemodule.removeRepoFromServiceScope = function(repo, service) {
     var i, index, len, pair;
     log("globalscopemodule.removeRepoFromServiceScope");
@@ -98,6 +97,7 @@
     }
   };
 
+  //###########################################################
   globalscopemodule.addServiceScope = function(scope, service) {
     var i, index, len, pair, serviceScopePair;
     log("cloudservicemodule.addReposToScope");
@@ -130,8 +130,11 @@
   };
 
   //# to continue to loop is not a good idea
+
+  //###########################################################
   globalscopemodule.resetScope = updateGlobalScope;
 
+  //###########################################################
   //region checkGlobalScope
   globalscopemodule.getAllThingiesInScope = function() {
     log("clourservicemodule.getAllThingiesInScope");
