@@ -94,14 +94,17 @@
     ];
   };
 
-  nextActionPrompt = function(actionChoices) {
+  nextActionPrompt = function(actionChoices, message) {
     actionChoices = actionChoices.map(addSeparators);
     actionChoices.unshift(new inquirer.Separator());
+    if (!message) {
+      message = "Select an action >";
+    }
     return [
       {
         name: "nextAction",
         type: "list",
-        message: "Select a userConfigAction >",
+        message: message,
         choices: actionChoices,
         default: actionChoices[0]
       }
@@ -174,12 +177,15 @@
     ];
   };
 
-  multipleSelectionPrompt = function(choices) {
+  multipleSelectionPrompt = function(choices, message) {
+    if (!message) {
+      message = "Select your Selection >";
+    }
     return [
       {
         name: "selection",
         type: "checkbox",
-        message: "Select your Selection >",
+        message: message,
         choices: choices
       }
     ];
@@ -287,10 +293,10 @@
     return answer.selection;
   };
 
-  userinquirermodule.inquireNextAction = async function(actions) {
+  userinquirermodule.inquireNextAction = async function(actions, message) {
     var answer, prompt;
     log("userinquirermodule.inquireNextAction");
-    prompt = nextActionPrompt(actions);
+    prompt = nextActionPrompt(actions, message);
     answer = (await inquirer.prompt(prompt));
     return answer.nextAction;
   };
@@ -319,10 +325,10 @@
     return answer.selectedThingyRecipe;
   };
 
-  userinquirermodule.inquireSelectionSet = async function(choices) {
+  userinquirermodule.inquireSelectionSet = async function(choices, message) {
     var answer, prompt;
     log("userinquirermodule.inquireSelectionSet");
-    prompt = multipleSelectionPrompt(choices);
+    prompt = multipleSelectionPrompt(choices, message);
     answer = (await inquirer.prompt(prompt));
     return answer.selection;
   };
