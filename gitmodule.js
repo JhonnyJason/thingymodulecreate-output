@@ -34,9 +34,6 @@
   };
 
   
-  //region internalFunctions
-  //endregion
-
   //region exposedFunctions
   gitmodule.addSubmodule = async function(base, remote, label) {
     var url;
