@@ -69,7 +69,7 @@
       userAgent: userAgent,
       baseUrl: baseUrl
     };
-    return Octokit(options);
+    return new Octokit(options);
   };
 
   checkAccess = async function(token) {
@@ -92,7 +92,6 @@
     log("retrieveAllRepositories");
     octokit = getOctokit(service.accessToken);
     options = {
-      owner: service.username,
       visibility: "all",
       affiliation: "owner",
       sort: "updated",
@@ -102,7 +101,7 @@
     };
     results = [];
     while (true) {
-      answer = (await octokit.repos.list(options));
+      answer = (await octokit.repos.listForAuthenticatedUser(options));
       data = answer.data;
       names = (function() {
         var i, len, results1;
