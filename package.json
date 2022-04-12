@@ -48,6 +48,6 @@
         "meow": "^6.1.0",
         "request": "^2.88.2",
         "request-promise": "^4.2.5",
-        "simple-git": "^1.132.0"
+        "simple-git": "^3.5.0"
     }
 }
